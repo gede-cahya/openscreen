@@ -1,5 +1,5 @@
 import type { Span } from "dnd-timeline";
-import { FolderOpen, Languages, Save, Video } from "lucide-react";
+import { ChevronDown, FolderOpen, Languages, Save, Video } from "lucide-react";
 import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { toast } from "sonner";
@@ -12,6 +12,14 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import {
 	Select,
@@ -198,6 +206,8 @@ export default function VideoEditor() {
 		undo,
 		redo,
 		resetState,
+		canUndo,
+		canRedo,
 	} = useEditorHistory(INITIAL_EDITOR_STATE);
 
 	const {
@@ -2731,17 +2741,132 @@ export default function VideoEditor() {
 				style={{ WebkitAppRegion: "drag" } as CSSProperties}
 			>
 				<div
-					className="flex-1 flex items-center gap-1"
+					className="flex-1 flex items-center gap-1.5"
 					style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
 				>
-					<div
-						className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-white/50 hover:text-white/90 hover:bg-white/[0.08] transition-all duration-150 ${isMac ? "ml-14" : "ml-2"}`}
-					>
-						<Languages size={14} />
+					{/* Custom Window Menus */}
+					<div className={`flex items-center gap-0.5 ${isMac ? "ml-14" : "ml-2"}`}>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<button
+									type="button"
+									className="px-2.5 py-1.5 rounded-lg text-[13px] font-semibold text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 outline-none focus-visible:ring-1 focus-visible:ring-white/20 focus-visible:bg-white/[0.08]"
+								>
+									{rawT("common.actions.file" as never) || "File"}
+								</button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent
+								align="start"
+								className="bg-[#09090b]/95 backdrop-blur-md border border-white/[0.08] text-slate-200 min-w-[170px]"
+							>
+								<DropdownMenuItem
+									onClick={handleNewProject}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between"
+								>
+									<span>{rawT("dialogs.unsavedChanges.newProject" as never) || "New Project"}</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+N</DropdownMenuShortcut>
+								</DropdownMenuItem>
+								<DropdownMenuSeparator className="bg-white/[0.08]" />
+								<DropdownMenuItem
+									onClick={handleLoadProject}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between"
+								>
+									<span>
+										{rawT("dialogs.unsavedChanges.loadProject" as never) || "Load Project…"}
+									</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+O</DropdownMenuShortcut>
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={handleSaveProject}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between"
+								>
+									<span>
+										{rawT("dialogs.unsavedChanges.saveProject" as never) || "Save Project…"}
+									</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+S</DropdownMenuShortcut>
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={handleSaveProjectAs}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between"
+								>
+									<span>
+										{rawT("dialogs.unsavedChanges.saveProjectAs" as never) || "Save Project As…"}
+									</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+Shift+S</DropdownMenuShortcut>
+								</DropdownMenuItem>
+								<DropdownMenuSeparator className="bg-white/[0.08]" />
+								<DropdownMenuItem
+									onClick={() => window.close()}
+									className="hover:bg-red-500/20 focus:bg-red-500/20 focus:text-red-400 text-red-400 cursor-pointer justify-between"
+								>
+									<span>{rawT("common.actions.quit" as never) || "Quit"}</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+Q</DropdownMenuShortcut>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<button
+									type="button"
+									className="px-2.5 py-1.5 rounded-lg text-[13px] font-semibold text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 outline-none focus-visible:ring-1 focus-visible:ring-white/20 focus-visible:bg-white/[0.08]"
+								>
+									{rawT("common.actions.edit" as never) || "Edit"}
+								</button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent
+								align="start"
+								className="bg-[#09090b]/95 backdrop-blur-md border border-white/[0.08] text-slate-200 min-w-[130px]"
+							>
+								<DropdownMenuItem
+									onClick={undo}
+									disabled={!canUndo}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between disabled:opacity-40 disabled:pointer-events-none"
+								>
+									<span>{rawT("common.actions.undo" as never) || "Undo"}</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+Z</DropdownMenuShortcut>
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={redo}
+									disabled={!canRedo}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between disabled:opacity-40 disabled:pointer-events-none"
+								>
+									<span>{rawT("common.actions.redo" as never) || "Redo"}</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+Y</DropdownMenuShortcut>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<button
+									type="button"
+									className="px-2.5 py-1.5 rounded-lg text-[13px] font-semibold text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 outline-none focus-visible:ring-1 focus-visible:ring-white/20 focus-visible:bg-white/[0.08]"
+								>
+									{rawT("common.actions.view" as never) || "View"}
+								</button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent
+								align="start"
+								className="bg-[#09090b]/95 backdrop-blur-md border border-white/[0.08] text-slate-200 min-w-[130px]"
+							>
+								<DropdownMenuItem
+									onClick={() => window.location.reload()}
+									className="hover:bg-white/[0.08] focus:bg-white/[0.08] focus:text-white cursor-pointer justify-between"
+								>
+									<span>{rawT("common.actions.reload" as never) || "Reload"}</span>
+									<DropdownMenuShortcut className="ml-2">Ctrl+R</DropdownMenuShortcut>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					</div>
+
+					<div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 ml-1">
+						<Languages size={15} />
 						<select
 							value={locale}
 							onChange={(e) => setLocale(e.target.value as Locale)}
-							className="bg-transparent text-[11px] font-medium outline-none cursor-pointer appearance-none pr-1"
+							className="bg-transparent text-[13px] font-semibold outline-none cursor-pointer appearance-none pr-1"
 							style={{ color: "inherit" }}
 						>
 							{availableLocales.map((loc) => (
@@ -2750,29 +2875,30 @@ export default function VideoEditor() {
 								</option>
 							))}
 						</select>
+						<ChevronDown size={12} className="opacity-70 ml-0.5 flex-shrink-0" />
 					</div>
 					<button
 						type="button"
 						onClick={() => setShowNewRecordingDialog(true)}
-						className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-white/50 hover:text-white/90 hover:bg-white/[0.08] transition-all duration-150 text-[11px] font-medium"
+						className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 text-[13px] font-medium"
 					>
-						<Video size={14} />
+						<Video size={15} />
 						{t("newRecording.title")}
 					</button>
 					<button
 						type="button"
 						onClick={handleLoadProject}
-						className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-white/50 hover:text-white/90 hover:bg-white/[0.08] transition-all duration-150 text-[11px] font-medium"
+						className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 text-[13px] font-medium"
 					>
-						<FolderOpen size={14} />
+						<FolderOpen size={15} />
 						{ts("project.load")}
 					</button>
 					<button
 						type="button"
 						onClick={handleSaveProject}
-						className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-white/50 hover:text-white/90 hover:bg-white/[0.08] transition-all duration-150 text-[11px] font-medium"
+						className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all duration-150 text-[13px] font-medium"
 					>
-						<Save size={14} />
+						<Save size={15} />
 						{ts("project.save")}
 					</button>
 				</div>

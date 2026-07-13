@@ -196,6 +196,10 @@ export function createEditorWindow(): BrowserWindow {
 
 	win.maximize();
 
+	if (process.platform !== "darwin") {
+		win.setAutoHideMenuBar(true);
+	}
+
 	// Show only once painted to avoid a white flash on cold Vite start.
 	win.once("ready-to-show", () => {
 		if (!HEADLESS) win.show();
@@ -344,6 +348,10 @@ export function createNotesWindow(): BrowserWindow {
 			backgroundThrottling: false,
 		},
 	});
+
+	if (process.platform !== "darwin") {
+		win.setAutoHideMenuBar(true);
+	}
 
 	win.setContentProtection(true);
 	win.once("ready-to-show", () => {
