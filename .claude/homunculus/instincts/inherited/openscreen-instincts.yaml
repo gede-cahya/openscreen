@@ -1,0 +1,431 @@
+# Instincts generated from https://github.com/gede-cahya/openscreen
+# Generated: 2026-07-13T05:37:29.857Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: openscreen-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Commit Length
+
+## Action
+
+Write moderate-length commit messages (~78 characters)
+
+## Evidence
+
+- Average commit message length: 78 chars
+- Based on 5 commits
+
+---
+id: openscreen-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: openscreen-import-alias
+trigger: "when importing modules"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Import Alias
+
+## Action
+
+Use path aliases (@/, ~/) instead of relative imports
+
+## Evidence
+
+- Import analysis shows alias pattern
+- Example: import { x } from '@/lib/x'
+
+---
+id: openscreen-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Export Style
+
+## Action
+
+Prefer mixed exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: mixed
+
+---
+id: openscreen-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: components
+
+---
+id: openscreen-test-colocate
+trigger: "when writing tests"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Test Colocate
+
+## Action
+
+Place test file next to the source file (e.g., Button.test.tsx next to Button.tsx)
+
+## Evidence
+
+- Colocated test pattern detected
+- Tests live alongside source files
+
+---
+id: openscreen-workflow-bugfix-with-unit-test
+trigger: "when doing bugfix with unit test"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Workflow Bugfix With Unit Test
+
+## Action
+
+Follow the bugfix-with-unit-test workflow:
+1. Identify and fix the bug in the relevant .tsx component file.
+2. Extract or refactor logic for testability if needed.
+3. Add or update a corresponding .test.ts file to cover the bug scenario.
+4. Run tests and confirm the fix is covered.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: src/components/video-editor/*.tsx, src/components/video-editor/*.test.ts
+
+---
+id: openscreen-workflow-merge-main-into-feature-branch
+trigger: "when doing merge main into feature branch"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/gede-cahya/openscreen
+---
+
+# Openscreen Workflow Merge Main Into Feature Branch
+
+## Action
+
+Follow the merge-main-into-feature-branch workflow:
+1. Pull the latest changes from main.
+2. Merge main into the feature/fix branch.
+3. Resolve any merge conflicts.
+4. Commit the merge with a standard message.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: electron/native/README.md, electron/native/wgc-capture/src/mf_encoder.cpp
+
+---
+id: openscreen-instinct-file-naming
+trigger: "When creating or renaming a file in the codebase"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct File Naming
+
+## Action
+
+Use PascalCase for file names.
+
+## Evidence
+
+- Pattern in namingConventions.files
+- Observed in src/components/
+
+---
+id: openscreen-instinct-function-naming
+trigger: "When defining a function"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Function Naming
+
+## Action
+
+Use camelCase for function names.
+
+## Evidence
+
+- Pattern in namingConventions.functions
+- Seen in TypeScript code examples
+
+---
+id: openscreen-instinct-class-naming
+trigger: "When defining a class"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Class Naming
+
+## Action
+
+Use PascalCase for class names.
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: openscreen-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Constant Naming
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names.
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: openscreen-instinct-import-alias
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Import Alias
+
+## Action
+
+Use alias import style.
+
+## Evidence
+
+- Pattern in importStyle
+- Seen in TypeScript code
+
+---
+id: openscreen-instinct-export-mixed
+trigger: "When exporting modules or members"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Export Mixed
+
+## Action
+
+Use a mixed export style (both named and default exports as appropriate).
+
+## Evidence
+
+- Pattern in exportStyle
+
+---
+id: openscreen-instinct-try-catch-errors
+trigger: "When handling errors in code"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Try Catch Errors
+
+## Action
+
+Use try-catch blocks for error handling.
+
+## Evidence
+
+- Pattern in errorHandling.style
+
+---
+id: openscreen-instinct-test-colocation
+trigger: "When adding or updating tests for a component"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Test Colocation
+
+## Action
+
+Colocate test files (.test.ts) with their corresponding component files.
+
+## Evidence
+
+- Pattern in architecture.testLocation
+- Files in src/components/video-editor/*.test.ts
+
+---
+id: openscreen-instinct-focused-unit-test
+trigger: "When fixing a bug in a React component"
+confidence: 0.9
+domain: testing
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Focused Unit Test
+
+## Action
+
+Add or update a focused unit test that covers the bug scenario.
+
+## Evidence
+
+- Workflow bugfix-with-unit-test
+- Commits updating .test.ts files
+
+---
+id: openscreen-instinct-commit-prefix-fix
+trigger: "When committing a bugfix"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Commit Prefix Fix
+
+## Action
+
+Prefix the commit message with 'fix' followed by affected modules in parentheses.
+
+## Evidence
+
+- Pattern in commits.prefixes
+- Example: fix(preview, UI): ...
+
+---
+id: openscreen-instinct-commit-merge-main
+trigger: "When merging main into a feature/fix branch"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Commit Merge Main
+
+## Action
+
+Use a standard merge commit message (e.g., 'Merge branch 'main' into ...').
+
+## Evidence
+
+- Example: Merge branch 'main' into codex/fix-export-preview-webgl-context-loss
+
+---
+id: openscreen-instinct-bugfix-with-unit-test-workflow
+trigger: "When a bug is identified in a TypeScript React component"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Bugfix With Unit Test Workflow
+
+## Action
+
+Fix the bug in the .tsx file, refactor for testability if needed, add/update a corresponding .test.ts file, and run tests to confirm coverage.
+
+## Evidence
+
+- Workflow: bugfix-with-unit-test
+- Commits and files in src/components/video-editor/
+
+---
+id: openscreen-instinct-merge-main-into-feature-branch-workflow
+trigger: "When a feature/fix branch needs to be updated with the latest changes from main"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: gede-cahya/openscreen
+---
+
+# Openscreen Instinct Merge Main Into Feature Branch Workflow
+
+## Action
+
+Pull latest changes from main, merge into the feature/fix branch, resolve conflicts, and commit the merge.
+
+## Evidence
+
+- Workflow: merge-main-into-feature-branch
+- Commits merging main into feature branches
+
