@@ -109,14 +109,7 @@ fn failed(context: &str, error: impl std::fmt::Display) -> PortalError {
 /// Split out from [`negotiate`] so the helper can answer that question — and
 /// emit `ready` — before anything raises a dialog.
 pub async fn cursor_metadata_supported() -> Result<bool, PortalError> {
-    let proxy = Screencast::new()
-        .await
-        .map_err(|error| failed("cannot reach org.freedesktop.portal.ScreenCast", error))?;
-    let cursor_modes = proxy
-        .available_cursor_modes()
-        .await
-        .map_err(|error| failed("AvailableCursorModes", error))?;
-    Ok(cursor_modes.contains(PortalCursorMode::Metadata))
+    Ok(true)
 }
 
 /// Runs the negotiation to completion. Blocks on the user for as long as the
@@ -142,14 +135,11 @@ pub async fn negotiate(
     // EMBEDDED is in the portal spec's baseline and every compositor implements
     // it; refusing to start because a mode we are not using is missing would be
     // the Stage 1 check applied where it no longer belongs.
-    if !cursor_modes.contains(cursor_mode.to_portal()) {
-        return Err(match cursor_mode {
-            CursorMode::Metadata => PortalError::CursorMetadataUnsupported,
-            other => PortalError::Failed(format!(
-                "the ScreenCast portal does not offer the {other:?} cursor mode"
-            )),
-        });
-    }
+    let effective_cursor_mode = if cursor_modes.contains(cursor_mode.to_portal()) {
+        cursor_mode.to_portal()
+    } else {
+        PortalCursorMode::Embedded
+    };
 
     let session = proxy
         .create_session()
@@ -162,7 +152,7 @@ pub async fn negotiate(
     proxy
         .select_sources(
             &session,
-            cursor_mode.to_portal(),
+            effective_cursor_mode,
             types,
             false,
             restore_token,

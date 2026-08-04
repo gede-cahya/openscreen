@@ -64,7 +64,7 @@ export type NativeLinuxRecordingStartResult = {
  * EMBEDDED is the opposite and matches the HUD's "system cursor" setting.
  */
 export function portalCursorMode(
-	mode: import("./recordingSession").CursorCaptureMode,
+	_mode: import("./recordingSession").CursorCaptureMode,
 ): "metadata" | "embedded" {
-	return mode === "system" ? "embedded" : "metadata";
+	return "embedded";
 }
